@@ -1,0 +1,25 @@
+//@version=5
+
+strategy("Sma Bot")
+length = input.int(14, minval=1, title="Length")
+oversold = input.int(35, title="Oversold Threshold")
+overbought = input.int(65, title="Overbought Threshold")
+shortSMA = ta.sma(close, 10)
+longSMA = ta.sma(close, 30)
+
+
+// Buy signal
+buySma = ta.crossover(shortSMA, longSMA)
+sellSma = ta.crossunder(shortSMA, longSMA)
+// Sell signal
+buy=  buySma
+sell=  sellSma
+if (buy)
+    strategy.entry("long", strategy.long, 1)
+
+if (sell)
+    strategy.entry("short", strategy.short, 1)
+// Plot signals
+
+plotshape(buy, location=location.bottom, style=shape.arrowup, color=color.green)
+plotshape(sell, location=location.bottom, style=shape.arrowdown, color=color.red)
